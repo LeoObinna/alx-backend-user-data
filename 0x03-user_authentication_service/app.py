@@ -26,7 +26,7 @@ def _hash_password(password: str) -> bytes:
 @app.route("/", methods=["GET"], strict_slashes=False)
 def index() -> str:
     """GET /
-    
+
     Return:
         str: The home page's payload.
     """
@@ -36,9 +36,9 @@ def index() -> str:
 @app.route("/users", methods=["POST"], strict_slashes=False)
 def users() -> str:
     """POST /users
-    
+
     Registers a new user.
-    
+
     Return:
         str: The account creation payload.
     """
@@ -55,9 +55,9 @@ def users() -> str:
 @app.route("/sessions", methods=["POST"], strict_slashes=False)
 def login() -> str:
     """POST /sessions
-    
-    Logs in a user if the credentials provided are correct, and creates a new session.
-    
+
+    Logs in a user if the credentials provided are correct, and
+    creates a new session.
     Return:
         str: The account login payload.
     """
@@ -74,9 +74,9 @@ def login() -> str:
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
 def logout() -> str:
     """DELETE /sessions
-    
+
     Logs out a logged-in user and destroys their session.
-    
+
     Return:
         str: Redirects to the home route.
     """
@@ -91,9 +91,7 @@ def logout() -> str:
 @app.route("/profile", methods=["GET"], strict_slashes=False)
 def profile() -> str:
     """GET /profile
-    
     Returns a user's email based on the session_id in the received cookies.
-    
     Return:
         str: The user's profile information.
     """
@@ -107,9 +105,7 @@ def profile() -> str:
 @app.route("/reset_password", methods=["POST"], strict_slashes=False)
 def get_reset_password_token() -> str:
     """POST /reset_password
-    
     Generates a token for resetting a user's password.
-    
     Return:
         str: The user's password reset payload.
     """
@@ -124,9 +120,7 @@ def get_reset_password_token() -> str:
 @app.route("/reset_password", methods=["PUT"], strict_slashes=False)
 def update_password() -> str:
     """PUT /reset_password
-    
     Updates a user's password.
-    
     Return:
         str: The user's password updated payload.
     """
