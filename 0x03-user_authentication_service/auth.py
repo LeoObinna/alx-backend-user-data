@@ -10,17 +10,33 @@ from flask import (
     redirect,
     url_for
 )
-
+import bcrypt
 from auth import Auth
 
 app = Flask(__name__)
 AUTH = Auth()
 
 
+def _hash_password(password: str) -> bytes:
+    """
+    Hash a password using bcrypt.
+
+    :param password: The password to hash.
+    :return: The salted hash of the password.
+    """
+    # Generate a salt
+    salt = bcrypt.gensalt()
+
+    # Hash the password with the salt
+    hashed_password = bcrypt.hashpw(password.encode('utf-8'), salt)
+
+    return hashed_password
+
+
 @app.route("/", methods=["GET"], strict_slashes=False)
 def index() -> str:
     """
-    Return json respomse
+    Return json response
     {"message": "Bienvenue"}
     """
     return jsonify({"message": "Bienvenue"})
@@ -34,7 +50,8 @@ def users() -> str:
     email = request.form.get("email")
     password = request.form.get("password")
     try:
-        user = AUTH.register_user(email, password)
+        hashed_password = _hash_password(password)
+        user = AUTH.register_user(email, hashed_password)
     except ValueError:
         return jsonify({"message": "email already registered"}), 400
 
@@ -108,7 +125,8 @@ def update_password() -> str:
     new_password = request.form.get("new_password")
 
     try:
-        AUTH.update_password(reset_token, new_password)
+        hashed_password = _hash_password(new_password)
+        AUTH.update_password(reset_token, hashed_password)
     except ValueError:
         abort(403)
 
